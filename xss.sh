@@ -35,6 +35,6 @@ while IFS= read -r url; do
 	echo -e "\n\033[1;32mTask Finished!!!\033[0m"
 	
 	echo -e "\033[1;31mRemoving Files\033[0m"
-	rm -rf "$output_folder/*"
+	rm -rf $output_folder/*
 	
 done < "$targets"
