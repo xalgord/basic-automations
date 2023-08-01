@@ -1,8 +1,27 @@
 #!/bin/bash
 
+# Function to show script usage
+function show_usage() {
+    echo "Usage: $0 <targets_file> <folder_name>"
+    echo "  targets_file    Path to the file containing URLs to scan."
+    echo "  folder_name     Name of the folder to store scan output."
+    echo "  -h, --help      Show this help message."
+    exit 1
+}
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    show_usage
+fi
+
+# Validate command-line arguments
+if [[ $# -ne 2 ]]; then
+    echo "Error: Invalid number of arguments."
+    show_usage
+fi
+
 targets="$1"
 folder_name="$2"
-output_folder=~/targets/$folder_name
+output_folder=~/targets/"$folder_name"
 mkdir "$output_folder"
 
 # Function to run sqlidetector
