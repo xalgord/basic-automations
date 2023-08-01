@@ -1,7 +1,7 @@
 #!/bin/bash
 
 targets="$1"
-folder_name="2"
+folder_name="$2"
 output_folder=~/targets/$folder_name
 mkdir "$output_folder"
 
