@@ -1,7 +1,8 @@
 #!/bin/bash
 
 targets="$1"
-output_folder=~/targets/scan_result
+folder_name="$2"
+output_folder=~/targets/$folder_name
 mkdir "$output_folder"
 
 while IFS= read -r url; do
@@ -14,17 +15,17 @@ while IFS= read -r url; do
 	echo -e "\033[1;33mRunning kxss on paramspider.txt\033[0m"
 	cat "$output_folder/paramspider.txt" | kxss | grep -E "['\"<>].*['\"<>].*['\"<>].*['\"<>]" | notify
 	
-	# Run Gau on the URL
-	echo -e "\n\033[1;36mRunning Gau on $url\033[0m"
-	gau "$url" --o "$output_folder/gau.txt"
-	echo -e "\033[1;33mRunning kxss on gau.txt\033[0m"
-	cat "$output_folder/gau.txt" | kxss | grep -E "['\"<>].*['\"<>].*['\"<>].*['\"<>]" | notify
+	# # Run Gau on the URL
+	# echo -e "\n\033[1;36mRunning Gau on $url\033[0m"
+	# gau "$url" --o "$output_folder/gau.txt"
+	# echo -e "\033[1;33mRunning kxss on gau.txt\033[0m"
+	# cat "$output_folder/gau.txt" | kxss | grep -E "['\"<>].*['\"<>].*['\"<>].*['\"<>]" | notify
 	
-	# Run waybackurls on the URL
-	echo -e "\n\033[1;36mRunning waybackurls on $url\033[0m"
-	waybackurls "$url" > "$output_folder/waybackurls.txt"
-	echo -e "\033[1;33mRunning kxss on waybackurls.txt\033[0m"
-	cat "$output_folder/waybackurls.txt" | kxss | grep -E "['\"<>].*['\"<>].*['\"<>].*['\"<>]" | notify
+	# # Run waybackurls on the URL
+	# echo -e "\n\033[1;36mRunning waybackurls on $url\033[0m"
+	# waybackurls "$url" > "$output_folder/waybackurls.txt"
+	# echo -e "\033[1;33mRunning kxss on waybackurls.txt\033[0m"
+	# cat "$output_folder/waybackurls.txt" | kxss | grep -E "['\"<>].*['\"<>].*['\"<>].*['\"<>]" | notify
 	
 	# Run Katana on the URL
 	# echo -e "\n\033[1;36mRunning Katana on $url\033[0m"
