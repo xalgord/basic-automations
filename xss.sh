@@ -1,8 +1,20 @@
 #!/bin/bash
 
+if [[ "$1" == "--help" ]]; then
+    echo "Usage: $0 <targets_file> <folder_name>"
+    echo "       <targets_file>: File containing a list of target URLs."
+    echo "       <folder_name>: Name of the output folder where results will be stored."
+    exit 0
+fi
+
+if [[ $# -ne 2 ]]; then
+    echo "Error: Incorrect number of arguments. Use --help for usage information."
+    exit 1
+fi
+
 targets="$1"
 folder_name="$2"
-output_folder=~/targets/$folder_name
+output_folder=~/targets/"$folder_name"
 mkdir "$output_folder"
 
 while IFS= read -r url; do
