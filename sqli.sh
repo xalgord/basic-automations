@@ -26,7 +26,7 @@ mkdir "$output_folder"
 
 # Function to run sqlidetector
 function run_sqlidetector() {
-    python3 ~/tools/SQLiDetector/sqlidetector.py -f "$1" -w 50 -t 10 | notify
+    python3 ~/tools/SQLiDetector/sqlidetector.py -f "$1" -w 50 -t 10 | grep ">>>" | notify
 }
 
 # Function to handle the signal and skip the ongoing scan
@@ -67,24 +67,24 @@ while IFS= read -r url; do
     fi
 
     # Run Gau on the URL
-    echo -e "\n\033[1;36mRunning Gau on $url\033[0m"
-    gau "$url" --o "$output_folder/gau.txt"
-    echo -e "\033[1;33mRunning sqlidetector on gau.txt\033[0m"
-    run_sqlidetector "$output_folder/gau.txt"
-
-    if $continue_next_url; then
-        continue
-    fi
+    # echo -e "\n\033[1;36mRunning Gau on $url\033[0m"
+    # gau "$url" --o "$output_folder/gau.txt"
+    # echo -e "\033[1;33mRunning sqlidetector on gau.txt\033[0m"
+    # run_sqlidetector "$output_folder/gau.txt"
+# 
+    # if $continue_next_url; then
+        # continue
+    # fi
 
     # Run waybackurls on the URL
-    echo -e "\n\033[1;36mRunning waybackurls on $url\033[0m"
-    waybackurls "$url" > "$output_folder/waybackurls.txt"
-    echo -e "\033[1;33mRunning sqlidetector on waybackurls.txt\033[0m"
-    run_sqlidetector "$output_folder/waybackurls.txt"
+    # echo -e "\n\033[1;36mRunning waybackurls on $url\033[0m"
+    # waybackurls "$url" > "$output_folder/waybackurls.txt"
+    # echo -e "\033[1;33mRunning sqlidetector on waybackurls.txt\033[0m"
+    # run_sqlidetector "$output_folder/waybackurls.txt"
 
     echo -e "\n\033[1;32mTask Finished!!!\033[0m"
 
     echo -e "\033[1;31mRemoving Files\033[0m"
-    rm -rf "$output_folder/*"
+    rm -rf "$output_folder/"*
 
 done < "$targets"
