@@ -26,14 +26,14 @@ mkdir "$output_folder"
 
 # Function to run sqlidetector
 function run_sqlidetector() {
-    python3 ~/tools/SQLiDetector/sqlidetector.py -f "$1" -w 50 -t 10 | grep ">>>" | notify
+    python3 ~/tools/SQLiDetector/sqlidetector.py -f "$1" -w 100
 }
 
 # Function to handle the signal and skip the ongoing scan
 function skip_scan() {
     echo -e "\033[1;31mScan Skipped!\033[0m"
     echo -e "\033[1;31mRemoving Files\033[0m"
-    rm -rf "$output_folder/*"
+    rm -rf "$output_folder"/*
     continue_next_url=true
 }
 
@@ -41,7 +41,7 @@ function skip_scan() {
 function exit_script() {
     echo -e "\033[1;31mScript Exiting Gracefully!\033[0m"
     echo -e "\033[1;31mRemoving Files\033[0m"
-    rm -rf "$output_folder/*"
+    rm -rf "$output_folder"/*
     exit 0
 }
 
@@ -62,6 +62,13 @@ while IFS= read -r url; do
     echo -e "\033[1;33mRunning sqlidetector on paramspider.txt\033[0m"
     run_sqlidetector "$output_folder/paramspider.txt"
 
+    if [ -e "sqli_output.txt" ]; then
+        echo -e "\n\033[1;36mNotifying the Output\033[0m"
+        cat "sqli_output.txt" | notify
+        echo -e "\033[1;31mRemoving sqli_output.txt\033[0m"
+        rm "sqli_output.txt"
+    fi
+
     if $continue_next_url; then
         continue
     fi
@@ -71,9 +78,9 @@ while IFS= read -r url; do
     # gau "$url" --o "$output_folder/gau.txt"
     # echo -e "\033[1;33mRunning sqlidetector on gau.txt\033[0m"
     # run_sqlidetector "$output_folder/gau.txt"
-# 
+    #
     # if $continue_next_url; then
-        # continue
+    # continue
     # fi
 
     # Run waybackurls on the URL
@@ -87,4 +94,4 @@ while IFS= read -r url; do
     echo -e "\033[1;31mRemoving Files\033[0m"
     rm -rf "$output_folder/"*
 
-done < "$targets"
+done <"$targets"
