@@ -67,6 +67,9 @@ for target in "${domains[@]}"; do
     echo -e "${GREEN}Running Knockpy on $target${NC}"
     knockpy "$target" | grep -oE '[[:alnum:].-]+\.$grep_domain' > "$output_folder/$target-knockpy.txt"
 
+    echo -e "${GREEN}Running Findomain on $target${NC}"
+    findomain --quiet -t "$target" > "$output_folder/$target-findomain.txt"
+
 done
 
 echo -e "\n${GREEN}Removing Duplicates and Combining all files to all.txt${NC}"
