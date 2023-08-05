@@ -20,7 +20,7 @@ progress_bar() {
         # Create the progress bar string
         bar=""
         for ((i = 0; i < hashes; i++)); do
-            bar+="#"
+            bar+=">"
         done
 
         # Print the progress bar
