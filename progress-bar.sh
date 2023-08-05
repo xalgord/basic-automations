@@ -32,4 +32,4 @@ progress_bar() {
 
 
 # Usage example
-progress_bar 10 0.5  # Will run the progress bar for 10 seconds with an update interval of 0.1 seconds
+progress_bar 10 0.5  # Will run the progress bar for 10 seconds with an update interval of 0.5 seconds
