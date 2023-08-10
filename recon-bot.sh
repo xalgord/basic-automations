@@ -89,16 +89,18 @@ do
 	    echo -e "${GREEN}Running crt.sh on $target${NC}"
 	    crt.sh -d "$target" > "$output_folder/$target-crt.txt"
 
+		echo -e "\n${GREEN}Removing Duplicates and Combining all files to all.txt${NC}"
+		# notify
+		cat "$output_folder/"* | grep "$target" | tee -a "$output_folder/all.txt"
 	done
 
-	echo -e "\n${GREEN}Removing Duplicates and Combining all files to all.txt${NC}"
-	# notify
-	cat "$output_folder/"* | grep "$target" | tee -a "$output_folder/all.txt"
-	cat "$output_folder/all.txt" | anew "$output_folder/new_subdomains.txt" > diff_subdomains.txt
+
+	cat "$output_folder/all.txt" | anew "$output_folder/new_subdomains.txt" >> diff_subdomains.txt
 	echo "# New Subdomains discovered:" | notify -provider slack
 	cat  diff_subdomains.txt | notify -bulk -provider slack
 	echo -e "${GREEN}Checking for live domains${NC}"
 
+	cat "$output_folder/all.txt" | httpx > live.txt && cat live.txt | gau | grep "nextpage=" | notify
 	
 	#notify
 	echo "# Changes in subdomains:" | notify -provider slack
