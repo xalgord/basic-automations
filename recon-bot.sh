@@ -93,7 +93,8 @@ do
 
 	echo -e "\n${GREEN}Removing Duplicates and Combining all files to all.txt${NC}"
 	# notify
-	cat "$output_folder/"* | grep "$target" | sort -u > "$output_folder/all.txt" | anew new_subdomains.txt > diff_subdomains.txt
+	cat "$output_folder/"* | grep "$target" | tee -a "$output_folder/all.txt"
+	cat "$output_folder/all.txt" | anew "$output_folder/new_subdomains.txt" > diff_subdomains.txt
 	echo "# New Subdomains discovered:" | notify -provider slack
 	cat  diff_subdomains.txt | notify -bulk -provider slack
 	echo -e "${GREEN}Checking for live domains${NC}"
@@ -101,14 +102,15 @@ do
 	
 	#notify
 	echo "# Changes in subdomains:" | notify -provider slack
-	cat "$output_folder/all.txt" | httpx -sc -cl -location -title | anew "$output_folder/httpx.txt" | notify -provider slack -bulk
+	cat "$output_folder/all.txt" | httpx -sc -cl -location -title | tee -a "$output_folder/changes.txt"
+	cat "$output_folder/changes.txt" | anew "$output_folder/httpx.txt" | notify -provider slack -bulk
 	echo -e "${GREEN}Stored all live URLs to $output_folder/httpx.txt${NC}"
 
 	echo "Running xss.sh on diff_subdomains.txt"
-	xss.sh diff_subdomains.txt xss_result
+	xss.sh "$output_folder/changes.txt" xss_result
 
 	echo "Running sqli.sh on diff_subdomains.txt"
-	sqli.sh diff_subdomains.txt	sqli_result
+	sqli.sh "$output_folder/changes.txt" sqli_result
 
 	echo "Removing Unwanted Files..."
 	for target in "${domains[@]}"; do
